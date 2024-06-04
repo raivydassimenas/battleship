@@ -63,7 +63,13 @@ const createGameboard = (nrRows, nrCols) => {
       } else {
         throw new Error("Already hit");
       }
-    }
+      if (this.allSunk()) {
+        console.log("All ships sunk!");
+      }
+    },
+    allSunk() {
+      return this.ships.every((ship) => ship.isSunk());
+    },
   };
 };
 

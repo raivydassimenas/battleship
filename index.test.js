@@ -29,4 +29,5 @@ test("test receiveAttack", () => {
   expect(gameboard.board[0][0]).toBe("shipHit");
   expect(ship.isSunk()).toBe(true);``
   expect(gameboard.board[1][0]).toBe("hit");
+  expect(gameboard.allSunk()).toBe(true);
 });
