@@ -73,7 +73,15 @@ const createGameboard = (nrRows, nrCols) => {
   };
 };
 
+const createPlayer = (type) => {
+  return {
+    type,
+    gameboard: createGameboard(20, 20),
+  };
+}
+
 module.exports = {
   createShip,
   createGameboard,
+  createPlayer,
 };
