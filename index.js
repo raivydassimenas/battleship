@@ -1,4 +1,4 @@
-const createShip = (length) => {
+export const createShip = (length) => {
   return {
     length,
     timesHit: 0,
@@ -16,8 +16,10 @@ const createShip = (length) => {
   };
 };
 
-const createGameboard = (nrRows, nrCols) => {
+export const createGameboard = (nrRows, nrCols) => {
   return {
+    nrRows,
+    nrCols,
     board: Array.from({ length: nrRows }, () => new Array(nrCols).fill(null)),
     ships: [],
     placeShip(ship, topRow, topCol, horz) {
@@ -73,15 +75,9 @@ const createGameboard = (nrRows, nrCols) => {
   };
 };
 
-const createPlayer = (type) => {
+export const createPlayer = (type) => {
   return {
     type,
     gameboard: createGameboard(20, 20),
   };
 }
-
-module.exports = {
-  createShip,
-  createGameboard,
-  createPlayer,
-};

@@ -1,7 +1,7 @@
-const index = require("./index.js");
+import { createShip, createGameboard, createPlayer } from './index.js';
 
 test("test createShip", () => {
-  const ship = index.createShip(2);
+  const ship = createShip(2);
   expect(ship.length).toBe(2);
   expect(ship.timesHit).toBe(0);
   ship.hit();
@@ -11,18 +11,18 @@ test("test createShip", () => {
 });
 
 test("test createGameboard", () => {
-  const gameboard = index.createGameboard(2, 2);
+  const gameboard = createGameboard(2, 2);
   expect(gameboard.board.length).toBe(2);
   expect(gameboard.board[0].length).toBe(2);
-  const ship = index.createShip(1);
+  const ship = createShip(1);
   gameboard.placeShip(ship, 0, 0, true);
   expect(gameboard.board[0][0]).toBe("shipUnhit");
   expect(gameboard.board[1][0]).toBe(null);
 });
 
 test("test receiveAttack", () => {
-  const gameboard = index.createGameboard(2, 2);
-  const ship = index.createShip(1);
+  const gameboard = createGameboard(2, 2);
+  const ship = createShip(1);
   gameboard.placeShip(ship, 0, 0, true);
   gameboard.receiveAttack(0, 0);
   gameboard.receiveAttack(1, 0);

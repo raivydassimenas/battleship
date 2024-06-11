@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css" />
     <title>Battleship</title>
-    <script defer src="./game.js"></script>
+    <script defer type="module" src="./game.js"></script>
   </head>
   <body>
     <h1>Battleship</h1>
     <div class="game">
       <div class="player">
-        <div id="gameboard1"></div>
+        <h2>Player 1</h2>
+        <div id="gameboard1" class="gameboard"></div>
       </div>
       <div class="player">
-        <div id="gameboard2"></div>
+        <h2>Player 2</h2>
+        <div id="gameboard2" class="gameboard"></div>
       </div>
     </div>
   </body>

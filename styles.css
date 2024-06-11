@@ -1,3 +1,30 @@
 .game {
     display: flex;
 }
+
+.square {
+    height: 1em;
+    width: 1em;
+    border: 1px solid black;
+}
+
+.gameboard {
+    margin: 0.5em;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game {
+    margin: 0 auto;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
