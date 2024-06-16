@@ -58,3 +58,19 @@ moveDiv.textContent = move;
 
 renderGameboard(player1.gameboard, gameboard1);
 renderGameboard(player2.gameboard, gameboard2);
+
+const addShipForm = document.querySelector('#add-ship-form');
+addShipForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const shipType = addShipForm.querySelector('#ship-type').value;
+    const shipTopRow = parseInt(addShipForm.querySelector('#ship-top-row').value);
+    const shipTopCol = parseInt(addShipForm.querySelector('#ship-top-col').value);
+    const shipHorz = addShipForm.querySelector('#ship-horz').value === 'true';
+    try {
+        player1.gameboard.placeShip(shipType, shipTopRow, shipTopCol, shipHorz);
+        gameboardDiv1.innerHTML = '';
+        renderGameboard(player1.gameboard, gameboardDiv1);
+    } catch (e) {
+        alert(e);
+    }
+});

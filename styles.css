@@ -29,3 +29,10 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+.add-ship-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5em;
+}
