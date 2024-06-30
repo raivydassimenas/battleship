@@ -23,7 +23,6 @@
 
     <div class="add-ship-modal">
       <div class="modal-content">
-        <span class="close">&times;</span>
         <h2>Add Ship</h2>
         <form id="add-ship-form">
           <label for="ship-type">Ship Type:</label>
@@ -39,6 +38,10 @@
             <option value="horizontal">Horizontal</option>
             <option value="vertical">Vertical</option>
           </select>
+          <label for="row">Row:</label>
+          <input type="number" id="row" name="row" min="1" max="20" />
+          <label for="col">Column:</label>
+          <input type="number" id="col" name="col" min="1" max="20" />
           <button type="submit">Add Ship</button>
         </form>
       </div>

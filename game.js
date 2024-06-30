@@ -56,16 +56,16 @@ const gameboardDiv2 = document.querySelector("#gameboard2");
 const moveDiv = document.querySelector('#move');
 moveDiv.textContent = move;
 
-renderGameboard(player1.gameboard, gameboard1);
-renderGameboard(player2.gameboard, gameboard2);
+renderGameboard(player1.gameboard, gameboardDiv1);
+renderGameboard(player2.gameboard, gameboardDiv2);
 
 const addShipForm = document.querySelector('#add-ship-form');
 addShipForm.addEventListener('submit', e => {
     e.preventDefault();
     const shipType = addShipForm.querySelector('#ship-type').value;
-    const shipTopRow = parseInt(addShipForm.querySelector('#ship-top-row').value);
-    const shipTopCol = parseInt(addShipForm.querySelector('#ship-top-col').value);
-    const shipHorz = addShipForm.querySelector('#ship-horz').value === 'true';
+    const shipTopRow = parseInt(addShipForm.querySelector('#row').value);
+    const shipTopCol = parseInt(addShipForm.querySelector('#col').value);
+    const shipHorz = addShipForm.querySelector('#orientation').value === 'horizontal';
     try {
         player1.gameboard.placeShip(shipType, shipTopRow, shipTopCol, shipHorz);
         gameboardDiv1.innerHTML = '';
