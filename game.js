@@ -59,18 +59,32 @@ moveDiv.textContent = move;
 renderGameboard(player1.gameboard, gameboardDiv1);
 renderGameboard(player2.gameboard, gameboardDiv2);
 
+const shipTypes = [
+  "carrier",
+  "battleship",
+  "cruiser",
+  "submarine",
+  "destroyer",
+];
+
 const addShipForm = document.querySelector('#add-ship-form');
 addShipForm.addEventListener('submit', e => {
     e.preventDefault();
-    const shipType = addShipForm.querySelector('#ship-type').value;
-    const shipTopRow = parseInt(addShipForm.querySelector('#row').value);
-    const shipTopCol = parseInt(addShipForm.querySelector('#col').value);
-    const shipHorz = addShipForm.querySelector('#orientation').value === 'horizontal';
-    try {
-        player1.gameboard.placeShip(shipType, shipTopRow, shipTopCol, shipHorz);
-        gameboardDiv1.innerHTML = '';
-        renderGameboard(player1.gameboard, gameboardDiv1);
-    } catch (e) {
-        alert(e);
-    }
+    shipTypes.forEach(shipType => {
+        const ship = {
+            length: 5 - shipTypes.indexOf(shipType),
+        };
+        const shipType = document.querySelector('#ship-type');
+        shipType.innerText = `Add ${shipType} (${ship.length}) ship:`;
+        const shipTopRow = parseInt(addShipForm.elements['row'].value);
+        const shipTopCol = parseInt(addShipForm.elements['col'].value);
+        const shipHorz = addShipForm.elements['orientation'].value === 'horizontal';
+        try {
+            player1.gameboard.placeShip(ship, shipTopRow, shipTopCol, shipHorz);
+            gameboardDiv1.innerHTML = '';
+            renderGameboard(player1.gameboard, gameboardDiv1);
+        } catch (e) {
+            alert(e);
+        }
+    });
 });
