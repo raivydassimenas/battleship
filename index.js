@@ -47,6 +47,7 @@ export const createGameboard = (nrRows, nrCols) => {
         }
       }
       this.ships.push(ship);
+      return true;
     },
     receiveAttack(row, col) {
       if (this.board[row][col] === "shipUnhit") {

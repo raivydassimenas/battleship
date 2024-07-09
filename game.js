@@ -5,8 +5,8 @@ const colWidth = '1em';
 
 const player1 = createPlayer('human');
 const player2 = createPlayer('human');
+const currPlayer = player1;
 
-let move = 'Player 1';
 
 const renderGameboard = (gameboard, gameboardDiv) => {
     const nrRows = gameboard.nrRows;
@@ -44,17 +44,10 @@ const renderGameboard = (gameboard, gameboardDiv) => {
     gameboardDiv.appendChild(gameboardDivChild);
 }
 
-const placeShips = (ships, player) => {
-    for (let ship in ships) {
-
-    }
-}
-
-
 const gameboardDiv1 = document.querySelector("#gameboard1");
 const gameboardDiv2 = document.querySelector("#gameboard2");
 const moveDiv = document.querySelector('#move');
-moveDiv.textContent = move;
+moveDiv.textContent = currPlayer === player1 ? 'Player 1' : 'Player 2';
 
 renderGameboard(player1.gameboard, gameboardDiv1);
 renderGameboard(player2.gameboard, gameboardDiv2);
@@ -66,10 +59,13 @@ const ships = [
   { type: "submarine", length: 3 },
   { type: "destroyer", length: 2 },
 ];
+
 let currentShipIndex = 0;
 const shipType = document.querySelector("#ship-type");
+shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
 
 const addShipForm = document.querySelector('#add-ship-form');
+const addShipModal = document.querySelector('#add-ship-modal');
 
 function nextShip() {
   currentShipIndex++;
@@ -77,7 +73,12 @@ function nextShip() {
     shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
   } else {
     alert("All ships placed successfully!");
-    addShipForm.style.display = "none"; // Hide the form when all ships are placed
+    if (currPlayer === player1) {
+      currentShipIndex = 0;
+      currPlayer = player2;
+      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
+    }
+    addShipModal.style.display = "none"; // Hide the form when all ships are placed
   }
 }
 
@@ -87,11 +88,13 @@ addShipForm.addEventListener("submit", (event) => {
   const startY = parseInt(document.getElementById("row").value);
   const orientation = document.getElementById("orientation").value === "horizontal";
   const currentShip = ships[currentShipIndex];
+  shipType.innerText = `Add ${currentShip.type} (${currentShip.length}) ship:`;
+  console.log(startX, startY, orientation, currentShip.length, currentShip.type);
 
   if (
-    player1.gameboard.placeShip(currentShip.length, startX, startY, orientation)
+    currPlayer.gameboard.placeShip(currentShip.length, startX, startY, orientation)
   ) {
-    alert(`${capitalize(currentShip.type)} placed successfully!`);
+    alert(`${currentShip.type} placed successfully!`);
     nextShip();
   } else {
     alert("Invalid placement. Try again.");
