@@ -5,7 +5,8 @@ const colWidth = "1em";
 
 const player1 = createPlayer("human");
 const player2 = createPlayer("human");
-const currPlayer = player1;
+let currPlayer = player1;
+let move = "Player 1";
 
 const renderGameboard = (gameboard, gameboardDiv) => {
   const nrRows = gameboard.nrRows;
