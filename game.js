@@ -59,26 +59,29 @@ const ships = [
 
 let currentShipIndex = 0;
 const shipType = document.querySelector("#ship-type");
-shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
+shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
 
 const addShipForm = document.querySelector("#add-ship-form");
 const addShipModal = document.querySelector("#add-ship-modal");
+const game = document.querySelector("#game");
+game.style.display = "none";
 
 function nextShip() {
   currentShipIndex++;
   if (currentShipIndex < ships.length) {
-    shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
+    shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship: (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
   } else {
     alert("All ships placed successfully!");
     if (currPlayer === player1) {
       currentShipIndex = 0;
       currPlayer = player2;
-      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship:`;
+      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship: (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
     }
     if (currPlayer === player2 && currentShipIndex === ships.length) {
       addShipModal.style.display = "none";
       renderGameboard(player1.gameboard, gameboardDiv1);
-      renderGameboard(player2.gameboard, gameboardDiv2); // Hide the form when all ships are placed
+      renderGameboard(player2.gameboard, gameboardDiv2);
+      game.style.display = "relative"; // Hide the form when all ships are placed
     }
   }
 }
