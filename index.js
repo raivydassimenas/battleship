@@ -1,5 +1,6 @@
-export const createShip = (length) => {
+export const createShip = (type, length) => {
   return {
+    type,
     length,
     timesHit: 0,
     sunk: false,

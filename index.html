@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles.css" />
-    <title>Battleship</title>
-    <script defer type="module" src="./game.js"></script>
-  </head>
-  <body>
-    <h1>Battleship</h1>
-    
-    <div id="game">
-      <div id="move"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>Battleship</title>
+  <script defer type="module" src="./game.js"></script>
+</head>
+
+<body>
+  <h1>Battleship</h1>
+
+  <div id="game">
+    <div id="move"></div>
+    <div id="gameboards">
       <div class="player">
         <h2>Player 1</h2>
         <div id="gameboard1" class="gameboard"></div>
@@ -21,24 +24,26 @@
         <div id="gameboard2" class="gameboard"></div>
       </div>
     </div>
+  </div>
 
-    <div id="add-ship-modal">
-      <div id="modal-content">
-        <h2>Add Ship</h2>
-        <div id="ship-type"></div>
-        <form id="add-ship-form">
-          <label for="orientation">Orientation:</label>
-          <select id="orientation" name="orientation">
-            <option value="horizontal">Horizontal</option>
-            <option value="vertical">Vertical</option>
-          </select>
-          <label for="row">Row:</label>
-          <input type="number" id="row" name="row" min="1" max="20" />
-          <label for="col">Column:</label>
-          <input type="number" id="col" name="col" min="1" max="20" />
-          <button type="submit">Add Ship</button>
-        </form>
-      </div>
+  <div id="add-ship-modal">
+    <div id="modal-content">
+      <h2>Add Ship</h2>
+      <div id="ship-type"></div>
+      <form id="add-ship-form">
+        <label for="orientation">Orientation:</label>
+        <select id="orientation" name="orientation">
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+        </select>
+        <label for="row">Row:</label>
+        <input type="number" id="row" name="row" min="1" max="20" />
+        <label for="col">Column:</label>
+        <input type="number" id="col" name="col" min="1" max="20" />
+        <button type="submit">Add Ship</button>
+      </form>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

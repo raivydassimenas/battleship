@@ -1,4 +1,4 @@
-import { createPlayer, createGameboard } from "./index.js";
+import { createPlayer, createGameboard, createShip } from "./index.js";
 
 const rowHeight = "1em";
 const colWidth = "1em";
@@ -22,7 +22,7 @@ const renderGameboard = (gameboard, gameboardDiv) => {
       square.classList.add("square");
       if (gameboard.board[i][j] === "shipHit") {
         square.style.background = "red";
-      } else if (gameboard.board[i][j] === "hit") {
+      } else if (gameboard.board[i][j] === "shipUnhit") {
         square.style.background = "black";
       } else {
         square.addEventListener("click", (e) => {
@@ -69,27 +69,27 @@ game.style.display = "none";
 function nextShip() {
   currentShipIndex++;
   if (currentShipIndex < ships.length) {
-    shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship: (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+    shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
   } else {
     alert("All ships placed successfully!");
     if (currPlayer === player1) {
       currentShipIndex = 0;
       currPlayer = player2;
-      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship: (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
     }
     if (currPlayer === player2 && currentShipIndex === ships.length) {
       addShipModal.style.display = "none";
       renderGameboard(player1.gameboard, gameboardDiv1);
       renderGameboard(player2.gameboard, gameboardDiv2);
-      game.style.display = "relative"; // Hide the form when all ships are placed
+      game.style.display = "block"; // Hide the form when all ships are placed
     }
   }
 }
 
 addShipForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  const startX = parseInt(document.getElementById("col").value);
-  const startY = parseInt(document.getElementById("row").value);
+  const startX = parseInt(document.getElementById("col").value) - 1;
+  const startY = parseInt(document.getElementById("row").value) - 1;
   const orientation =
     document.getElementById("orientation").value === "horizontal";
   const currentShip = ships[currentShipIndex];
@@ -102,9 +102,10 @@ addShipForm.addEventListener("submit", (event) => {
     currentShip.type
   );
 
+  const ship = createShip(currentShip.type, currentShip.length);
   if (
     currPlayer.gameboard.placeShip(
-      currentShip.length,
+      ship,
       startX,
       startY,
       orientation
