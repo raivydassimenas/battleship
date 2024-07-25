@@ -22,7 +22,7 @@ const renderGameboard = (gameboard, gameboardDiv) => {
       square.classList.add("square");
       if (gameboard.board[i][j] === "shipHit") {
         square.style.background = "red";
-      } else if (gameboard.board[i][j] === "shipUnhit") {
+      } else if (gameboard.board[i][j] === "hit") {
         square.style.background = "black";
       } else {
         square.addEventListener("click", (e) => {
@@ -95,8 +95,8 @@ addShipForm.addEventListener("submit", (event) => {
   const currentShip = ships[currentShipIndex];
   shipType.innerText = `Add ${currentShip.type} (${currentShip.length}) ship:`;
   console.log(
-    startX,
     startY,
+    startX,
     orientation,
     currentShip.length,
     currentShip.type
@@ -106,8 +106,8 @@ addShipForm.addEventListener("submit", (event) => {
   if (
     currPlayer.gameboard.placeShip(
       ship,
-      startX,
       startY,
+      startX,
       orientation
     )
   ) {
