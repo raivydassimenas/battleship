@@ -58,7 +58,7 @@ export const createGameboard = (nrRows, nrCols) => {
           if (ship.coords.some((coord) => coord === coords)) {
             ship.hit();
             if (ship.isSunk()) {
-              console.log("Sunk ship!");
+              alert("Sunk ship!");
             }
           }
         });

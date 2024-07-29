@@ -3,8 +3,8 @@ import { createPlayer, createGameboard, createShip } from "./index.js";
 const rowHeight = "1em";
 const colWidth = "1em";
 
-const player1 = createPlayer("human");
-const player2 = createPlayer("human");
+let player1 = createPlayer("human");
+let player2 = createPlayer("human");
 let currPlayer = player1;
 let move = "Player 1";
 
@@ -28,9 +28,15 @@ const renderGameboard = (gameboard, gameboardDiv) => {
         square.addEventListener("click", (e) => {
           if (gameboard === player1.gameboard && move === "Player 2") {
             gameboard.receiveAttack(i, j);
+            if (player1.gameboard.allSunk()) {
+              alert("Player 2 wins!");
+            }
             move = "Player 1";
           } else if (gameboard === player2.gameboard && move === "Player 1") {
             gameboard.receiveAttack(i, j);
+            if (player2.gameboard.allSunk()) {
+              alert("Player 1 wins!");
+            }
             move = "Player 2";
           }
           moveDiv.textContent = move;
@@ -59,7 +65,9 @@ const ships = [
 
 let currentShipIndex = 0;
 const shipType = document.querySelector("#ship-type");
-shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+shipType.innerText = `Add ${ships[currentShipIndex].type} (${
+  ships[currentShipIndex].length
+}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
 
 const addShipForm = document.querySelector("#add-ship-form");
 const addShipModal = document.querySelector("#add-ship-modal");
@@ -69,13 +77,17 @@ game.style.display = "none";
 function nextShip() {
   currentShipIndex++;
   if (currentShipIndex < ships.length) {
-    shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+    shipType.innerText = `Add ${ships[currentShipIndex].type} (${
+      ships[currentShipIndex].length
+    }) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
   } else {
     alert("All ships placed successfully!");
     if (currPlayer === player1) {
       currentShipIndex = 0;
       currPlayer = player2;
-      shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+      shipType.innerText = `Add ${ships[currentShipIndex].type} (${
+        ships[currentShipIndex].length
+      }) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
     }
     if (currPlayer === player2 && currentShipIndex === ships.length) {
       addShipModal.style.display = "none";
@@ -103,14 +115,7 @@ addShipForm.addEventListener("submit", (event) => {
   );
 
   const ship = createShip(currentShip.type, currentShip.length);
-  if (
-    currPlayer.gameboard.placeShip(
-      ship,
-      startY,
-      startX,
-      orientation
-    )
-  ) {
+  if (currPlayer.gameboard.placeShip(ship, startY, startX, orientation)) {
     alert(`${currentShip.type} placed successfully!`);
     nextShip();
   } else {
