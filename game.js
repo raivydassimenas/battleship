@@ -30,12 +30,14 @@ const renderGameboard = (gameboard, gameboardDiv) => {
             gameboard.receiveAttack(i, j);
             if (player1.gameboard.allSunk()) {
               alert("Player 2 wins!");
+              game.style.display = "none";
             }
             move = "Player 1";
           } else if (gameboard === player2.gameboard && move === "Player 1") {
             gameboard.receiveAttack(i, j);
             if (player2.gameboard.allSunk()) {
               alert("Player 1 wins!");
+              game.style.display = "none";
             }
             move = "Player 2";
           }
@@ -106,13 +108,6 @@ addShipForm.addEventListener("submit", (event) => {
     document.getElementById("orientation").value === "horizontal";
   const currentShip = ships[currentShipIndex];
   shipType.innerText = `Add ${currentShip.type} (${currentShip.length}) ship:`;
-  console.log(
-    startY,
-    startX,
-    orientation,
-    currentShip.length,
-    currentShip.type
-  );
 
   const ship = createShip(currentShip.type, currentShip.length);
   if (currPlayer.gameboard.placeShip(ship, startY, startX, orientation)) {

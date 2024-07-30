@@ -68,7 +68,7 @@ export const createGameboard = (nrRows, nrCols) => {
         throw new Error("Already hit");
       }
       if (this.allSunk()) {
-        console.log("All ships sunk!");
+        alert("All ships sunk!");
       }
     },
     allSunk() {
