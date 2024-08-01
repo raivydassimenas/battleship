@@ -117,3 +117,21 @@ addShipForm.addEventListener("submit", (event) => {
     alert("Invalid placement. Try again.");
   }
 });
+
+function getAvailableMoves(player) {
+  const moves = [];
+  for (let i = 0; i < player.gameboard.nrRows; i++) {
+    for (let j = 0; j < player.gameboard.nrCols; j++) {
+      if (player.gameboard.board[i][j] === null) {
+        moves.push([i, j]);
+      }
+    }
+  }
+  return moves;
+}
+
+function getComputerMove(player) {
+  const moves = getAvailableMoves(player);
+  const randomIndex = Math.floor(Math.random() * moves.length);
+  return moves[randomIndex];
+}
