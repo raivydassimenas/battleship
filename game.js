@@ -4,9 +4,9 @@ const rowHeight = "1em";
 const colWidth = "1em";
 
 let player1 = createPlayer("human");
-let player2 = createPlayer("human");
+let player2 = createPlayer("computer");
 let currPlayer = player1;
-let move = "Player 1";
+let move = "Player";
 
 const renderGameboard = (gameboard, gameboardDiv) => {
   const nrRows = gameboard.nrRows;
@@ -26,20 +26,20 @@ const renderGameboard = (gameboard, gameboardDiv) => {
         square.style.background = "black";
       } else {
         square.addEventListener("click", (e) => {
-          if (gameboard === player1.gameboard && move === "Player 2") {
+          if (gameboard === player1.gameboard && move === "Computer") {
             gameboard.receiveAttack(i, j);
             if (player1.gameboard.allSunk()) {
-              alert("Player 2 wins!");
+              alert("Computer wins!");
               game.style.display = "none";
             }
-            move = "Player 1";
-          } else if (gameboard === player2.gameboard && move === "Player 1") {
+            move = "Player";
+          } else if (gameboard === player2.gameboard && move === "Player") {
             gameboard.receiveAttack(i, j);
             if (player2.gameboard.allSunk()) {
-              alert("Player 1 wins!");
+              alert("Player wins!");
               game.style.display = "none";
             }
-            move = "Player 2";
+            move = "Computer";
           }
           moveDiv.textContent = move;
           gameboardDiv.innerHTML = "";
@@ -55,7 +55,7 @@ const renderGameboard = (gameboard, gameboardDiv) => {
 const gameboardDiv1 = document.querySelector("#gameboard1");
 const gameboardDiv2 = document.querySelector("#gameboard2");
 const moveDiv = document.querySelector("#move");
-moveDiv.textContent = currPlayer === player1 ? "Player 1" : "Player 2";
+moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
 
 const ships = [
   { type: "carrier", length: 5 },
@@ -69,7 +69,7 @@ let currentShipIndex = 0;
 const shipType = document.querySelector("#ship-type");
 shipType.innerText = `Add ${ships[currentShipIndex].type} (${
   ships[currentShipIndex].length
-}) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+}) ship (${currPlayer === player1 ? "Player" : "Computer"}):`;
 
 const addShipForm = document.querySelector("#add-ship-form");
 const addShipModal = document.querySelector("#add-ship-modal");
@@ -81,7 +81,7 @@ function nextShip() {
   if (currentShipIndex < ships.length) {
     shipType.innerText = `Add ${ships[currentShipIndex].type} (${
       ships[currentShipIndex].length
-    }) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+    }) ship (${currPlayer === player1 ? "Player" : "Computer"}):`;
   } else {
     alert("All ships placed successfully!");
     if (currPlayer === player1) {
@@ -89,7 +89,7 @@ function nextShip() {
       currPlayer = player2;
       shipType.innerText = `Add ${ships[currentShipIndex].type} (${
         ships[currentShipIndex].length
-      }) ship (${currPlayer === player1 ? "Player 1" : "Player 2"}):`;
+      }) ship (${currPlayer === player1 ? "Player" : "Computer"}):`;
     }
     if (currPlayer === player2 && currentShipIndex === ships.length) {
       addShipModal.style.display = "none";
