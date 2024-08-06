@@ -118,11 +118,11 @@ addShipForm.addEventListener("submit", (event) => {
   }
 });
 
-function getAvailableMoves(player) {
+function getAvailableComputerMoves() {
   const moves = [];
-  for (let i = 0; i < player.gameboard.nrRows; i++) {
-    for (let j = 0; j < player.gameboard.nrCols; j++) {
-      if (player.gameboard.board[i][j] === null) {
+  for (let i = 0; i < player1.gameboard.nrRows; i++) {
+    for (let j = 0; j < player1.gameboard.nrCols; j++) {
+      if (player1.gameboard.board[i][j] === null) {
         moves.push([i, j]);
       }
     }
@@ -130,8 +130,8 @@ function getAvailableMoves(player) {
   return moves;
 }
 
-function getComputerMove(player) {
-  const moves = getAvailableMoves(player);
+function getComputerMove() {
+  const moves = getAvailableComputerMoves();
   const randomIndex = Math.floor(Math.random() * moves.length);
   return moves[randomIndex];
 }
@@ -149,8 +149,9 @@ async function getPlayerMove() {
 }
 
 while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
+  moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
   if (currPlayer === player2) {
-    const [i, j] = getComputerMove(player2);
+    const [i, j] = getComputerMove();
     player1.gameboard.receiveAttack(i, j);
     if (player1.gameboard.allSunk()) {
       alert("Computer wins!");
@@ -166,5 +167,5 @@ while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
     }
     currPlayer = player2;
   }
-  moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
+  
 }
