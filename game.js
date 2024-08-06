@@ -135,3 +135,36 @@ function getComputerMove(player) {
   const randomIndex = Math.floor(Math.random() * moves.length);
   return moves[randomIndex];
 }
+
+async function getPlayerMove() {
+  return new Promise((resolve) => {
+    const submitButton = document.querySelector("#submit-move");
+    submitButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const row = parseInt(document.querySelector("#row").value) - 1;
+      const col = parseInt(document.querySelector("#col").value) - 1;
+      resolve([row, col]);
+    });
+  });
+}
+
+while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
+  if (currPlayer === player2) {
+    const [i, j] = getComputerMove(player2);
+    player1.gameboard.receiveAttack(i, j);
+    if (player1.gameboard.allSunk()) {
+      alert("Computer wins!");
+      game.style.display = "none";
+    }
+    currPlayer = player1;
+  } else {
+    const [i, j] = await getPlayerMove();
+    player2.gameboard.receiveAttack(i, j);
+    if (player2.gameboard.allSunk()) {
+      alert("Player wins!");
+      game.style.display = "none";
+    }
+    currPlayer = player2;
+  }
+  moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
+}
