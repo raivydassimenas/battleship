@@ -9,43 +9,20 @@ let currPlayer = player1;
 let move = "Player";
 
 const renderGameboard = (gameboard, gameboardDiv) => {
-  const nrRows = gameboard.nrRows;
-  const nrCols = gameboard.nrCols;
   const gameboardDivChild = document.createElement("div");
   gameboardDivChild.style.display = "grid";
-  gameboardDivChild.style.gridTemplateRows = `repeat(${nrRows}, ${rowHeight})`;
-  gameboardDivChild.style.gridTemplateColumns = `repeat(${nrCols}, ${colWidth})`;
+  gameboardDivChild.style.gridTemplateRows = `repeat(20, ${rowHeight})`;
+  gameboardDivChild.style.gridTemplateColumns = `repeat(20, ${colWidth})`;
 
-  for (let i = 0; i < nrRows; i++) {
-    for (let j = 0; j < nrCols; j++) {
+  for (let i = 0; i < 20; i++) {
+    for (let j = 0; j < 20; j++) {
       const square = document.createElement("div");
       square.classList.add("square");
       if (gameboard.board[i][j] === "shipHit") {
         square.style.background = "red";
       } else if (gameboard.board[i][j] === "hit") {
         square.style.background = "black";
-      } else {
-        square.addEventListener("click", (e) => {
-          if (gameboard === player1.gameboard && move === "Computer") {
-            gameboard.receiveAttack(i, j);
-            if (player1.gameboard.allSunk()) {
-              alert("Computer wins!");
-              game.style.display = "none";
-            }
-            move = "Player";
-          } else if (gameboard === player2.gameboard && move === "Player") {
-            gameboard.receiveAttack(i, j);
-            if (player2.gameboard.allSunk()) {
-              alert("Player wins!");
-              game.style.display = "none";
-            }
-            move = "Computer";
-          }
-          moveDiv.textContent = move;
-          gameboardDiv.innerHTML = "";
-          renderGameboard(gameboard, gameboardDiv);
-        });
-      }
+      } 
       gameboardDivChild.appendChild(square);
     }
   }
@@ -75,6 +52,8 @@ const addShipForm = document.querySelector("#add-ship-form");
 const addShipModal = document.querySelector("#add-ship-modal");
 const game = document.querySelector("#game");
 game.style.display = "none";
+const moveModal = document.querySelector("#player-move-modal");
+moveModal.style.display = "none";
 
 function nextShip() {
   currentShipIndex++;
@@ -120,8 +99,8 @@ addShipForm.addEventListener("submit", (event) => {
 
 function getAvailableComputerMoves() {
   const moves = [];
-  for (let i = 0; i < player1.gameboard.nrRows; i++) {
-    for (let j = 0; j < player1.gameboard.nrCols; j++) {
+  for (let i = 0; i < 20; i++) {
+    for (let j = 0; j < 20; j++) {
       if (player1.gameboard.board[i][j] === null) {
         moves.push([i, j]);
       }
@@ -141,8 +120,8 @@ async function getPlayerMove() {
     const submitButton = document.querySelector("#submit-move");
     submitButton.addEventListener("click", (event) => {
       event.preventDefault();
-      const row = parseInt(document.querySelector("#row").value) - 1;
-      const col = parseInt(document.querySelector("#col").value) - 1;
+      const row = parseInt(document.querySelector("#move-row").value) - 1;
+      const col = parseInt(document.querySelector("#move-col").value) - 1;
       resolve([row, col]);
     });
   });
@@ -159,6 +138,7 @@ while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
     }
     currPlayer = player1;
   } else {
+    moveModal.style.display = "block";
     const [i, j] = await getPlayerMove();
     player2.gameboard.receiveAttack(i, j);
     if (player2.gameboard.allSunk()) {
@@ -166,6 +146,6 @@ while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
       game.style.display = "none";
     }
     currPlayer = player2;
+    moveModal.style.display = "none";
   }
-  
 }

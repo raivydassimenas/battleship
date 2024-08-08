@@ -17,16 +17,14 @@ export const createShip = (type, length) => {
   };
 };
 
-export const createGameboard = (nrRows, nrCols) => {
+export const createGameboard = () => {
   return {
-    nrRows,
-    nrCols,
-    board: Array.from({ length: nrRows }, () => new Array(nrCols).fill(null)),
+    board: Array.from({ length: 20 }, () => new Array(20).fill(null)),
     ships: [],
     placeShip(ship, topRow, topCol, horz) {
       if (
-        (horz && (topRow > nrRows || topCol + ship.length > nrCols)) ||
-        (!horz && (topRow + ship.length > nrRows || topCol > nrCols))
+        (horz && (topRow > 20 || topCol + ship.length > 20)) ||
+        (!horz && (topRow + ship.length > 20 || topCol > 20))
       ) {
         throw new Error("Illegal ship placement");
       }
