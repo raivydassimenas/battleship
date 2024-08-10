@@ -1,18 +1,14 @@
-import { createPlayer, createGameboard, createShip } from "./index.js";
-
-const rowHeight = "1em";
-const colWidth = "1em";
+import { createPlayer, createShip } from "./index.js";
 
 let player1 = createPlayer("human");
 let player2 = createPlayer("computer");
 let currPlayer = player1;
-let move = "Player";
 
 const renderGameboard = (gameboard, gameboardDiv) => {
   const gameboardDivChild = document.createElement("div");
   gameboardDivChild.style.display = "grid";
-  gameboardDivChild.style.gridTemplateRows = `repeat(20, ${rowHeight})`;
-  gameboardDivChild.style.gridTemplateColumns = `repeat(20, ${colWidth})`;
+  gameboardDivChild.style.gridTemplateRows = `repeat(20, 1em)`;
+  gameboardDivChild.style.gridTemplateColumns = `repeat(20, 1em)`;
 
   for (let i = 0; i < 20; i++) {
     for (let j = 0; j < 20; j++) {
@@ -22,7 +18,7 @@ const renderGameboard = (gameboard, gameboardDiv) => {
         square.style.background = "red";
       } else if (gameboard.board[i][j] === "hit") {
         square.style.background = "black";
-      } 
+      }
       gameboardDivChild.appendChild(square);
     }
   }
@@ -32,7 +28,8 @@ const renderGameboard = (gameboard, gameboardDiv) => {
 const gameboardDiv1 = document.querySelector("#gameboard1");
 const gameboardDiv2 = document.querySelector("#gameboard2");
 const moveDiv = document.querySelector("#move");
-moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
+moveDiv.textContent =
+  currPlayer === player1 ? "Player's move" : "Computer's move";
 
 const ships = [
   { type: "carrier", length: 5 },
@@ -55,7 +52,7 @@ game.style.display = "none";
 const moveModal = document.querySelector("#player-move-modal");
 moveModal.style.display = "none";
 
-function nextShip() {
+async function nextShip() {
   currentShipIndex++;
   if (currentShipIndex < ships.length) {
     shipType.innerText = `Add ${ships[currentShipIndex].type} (${
@@ -74,7 +71,32 @@ function nextShip() {
       addShipModal.style.display = "none";
       renderGameboard(player1.gameboard, gameboardDiv1);
       renderGameboard(player2.gameboard, gameboardDiv2);
-      game.style.display = "block"; // Hide the form when all ships are placed
+      game.style.display = "block";
+      console.log("Game started");
+      while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
+        moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
+        if (currPlayer === player2) {
+          const [i, j] = getComputerMove();
+          player1.gameboard.receiveAttack(i, j);
+          if (player1.gameboard.allSunk()) {
+            alert("Computer wins!");
+            game.style.display = "none";
+          }
+          currPlayer = player1;
+        } else {
+          console.log("Player's turn");
+          moveModal.style.display = "block";
+          const [i, j] = await getPlayerMove();
+          player2.gameboard.receiveAttack(i, j);
+          if (player2.gameboard.allSunk()) {
+            alert("Player wins!");
+            game.style.display = "none";
+          }
+          currPlayer = player2;
+          moveModal.style.display = "none";
+        }
+      }
+      console.log("Game over");
     }
   }
 }
@@ -125,27 +147,4 @@ async function getPlayerMove() {
       resolve([row, col]);
     });
   });
-}
-
-while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
-  moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
-  if (currPlayer === player2) {
-    const [i, j] = getComputerMove();
-    player1.gameboard.receiveAttack(i, j);
-    if (player1.gameboard.allSunk()) {
-      alert("Computer wins!");
-      game.style.display = "none";
-    }
-    currPlayer = player1;
-  } else {
-    moveModal.style.display = "block";
-    const [i, j] = await getPlayerMove();
-    player2.gameboard.receiveAttack(i, j);
-    if (player2.gameboard.allSunk()) {
-      alert("Player wins!");
-      game.style.display = "none";
-    }
-    currPlayer = player2;
-    moveModal.style.display = "none";
-  }
 }
