@@ -37,9 +37,9 @@
           <option value="vertical">Vertical</option>
         </select>
         <label for="row">Row:</label>
-        <input type="number" id="row" name="row" min="1" max="20" />
+        <input type="number" id="row" name="row" min="1" max="20" required />
         <label for="col">Column:</label>
-        <input type="number" id="col" name="col" min="1" max="20" />
+        <input type="number" id="col" name="col" min="1" max="20" required />
         <button type="submit">Add Ship</button>
       </form>
     </div>
@@ -49,10 +49,10 @@
     <div id="move-modal-content">
       <form id="player-move-form">
         <label for="row">Row:</label>
-        <input type="number" id="move-row" name="row" min="1" max="20" />
+        <input type="number" id="move-row" name="row" min="1" max="20" required />
         <label for="col">Column:</label>
-        <input type="number" id="move-col" name="col" min="1" max="20" />
-        <button type="submit-move">Fire</button>
+        <input type="number" id="move-col" name="col" min="1" max="20" required />
+        <button type="submit" id="submit-move">Fire</button>
       </form>
     </div>
   </div>

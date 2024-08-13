@@ -5,6 +5,7 @@ let player2 = createPlayer("computer");
 let currPlayer = player1;
 
 const renderGameboard = (gameboard, gameboardDiv) => {
+  gameboardDiv.innerHTML = "";
   const gameboardDivChild = document.createElement("div");
   gameboardDivChild.style.display = "grid";
   gameboardDivChild.style.gridTemplateRows = `repeat(20, 1em)`;
@@ -72,7 +73,6 @@ async function nextShip() {
       renderGameboard(player1.gameboard, gameboardDiv1);
       renderGameboard(player2.gameboard, gameboardDiv2);
       game.style.display = "block";
-      console.log("Game started");
       while (!player1.gameboard.allSunk() && !player2.gameboard.allSunk()) {
         moveDiv.textContent = currPlayer === player1 ? "Player" : "Computer";
         if (currPlayer === player2) {
@@ -82,9 +82,9 @@ async function nextShip() {
             alert("Computer wins!");
             game.style.display = "none";
           }
+          renderGameboard(player1.gameboard, gameboardDiv1);
           currPlayer = player1;
         } else {
-          console.log("Player's turn");
           moveModal.style.display = "block";
           const [i, j] = await getPlayerMove();
           player2.gameboard.receiveAttack(i, j);
@@ -94,9 +94,9 @@ async function nextShip() {
           }
           currPlayer = player2;
           moveModal.style.display = "none";
+          renderGameboard(player2.gameboard, gameboardDiv2);
         }
       }
-      console.log("Game over");
     }
   }
 }
@@ -145,6 +145,7 @@ async function getPlayerMove() {
       const row = parseInt(document.querySelector("#move-row").value) - 1;
       const col = parseInt(document.querySelector("#move-col").value) - 1;
       resolve([row, col]);
+      renderGameboard(player2.gameboard, gameboardDiv2);
     });
   });
 }
