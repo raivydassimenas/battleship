@@ -26,21 +26,25 @@ export const createGameboard = () => {
         (horz && (topRow > 20 || topCol + ship.length > 20)) ||
         (!horz && (topRow + ship.length > 20 || topCol > 20))
       ) {
-        throw new Error("Illegal ship placement");
+        return false;
       }
       if (horz) {
         for (let i = 0; i < ship.length; i++) {
           if (this.board[topRow][topCol + i] !== null) {
-            throw new Error("Illegal ship placement");
+            return false;
           }
+        }
+        for (let i = 0; i < ship.length; i++) {
           this.board[topRow][topCol + i] = "shipUnhit";
           ship.coords.push(JSON.stringify([topRow, topCol + i]));
         }
       } else {
         for (let i = 0; i < ship.length; i++) {
           if (this.board[topRow + i][topCol] !== null) {
-            throw new Error("Illegal ship placement");
+            return false;
           }
+        }
+        for (let i = 0; i < ship.length; i++) {
           this.board[topRow + i][topCol] = "shipUnhit";
           ship.coords.push(JSON.stringify([topRow + i, topCol]));
         }

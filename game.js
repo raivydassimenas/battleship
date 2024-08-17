@@ -6,8 +6,8 @@ const gameboardDiv1 = document.querySelector("#gameboard1");
 const gameboardDiv2 = document.querySelector("#gameboard2");
 let currPlayer = player;
 
-const addShipForm = document.querySelector("#add-ship-form");
 const addShipModal = document.querySelector("#add-ship-modal");
+const submitShipButton = document.querySelector("#submit-ship");
 const game = document.querySelector("#game");
 game.style.display = "none";
 const moveModal = document.querySelector("#player-move-modal");
@@ -93,12 +93,18 @@ function placeComputerShip(ship) {
   let placed = false;
 
   while (!placed) {
-    let orientation = Math.random() < 0.5; // false = horizontal, true = vertical
-    let startX = Math.floor(Math.random() * 20);
-    let startY = Math.floor(Math.random() * 20);
+    const orientation = Math.random() < 0.5; // false = horizontal, true = vertical
+    const startX = Math.floor(Math.random() * 20);
+    const startY = Math.floor(Math.random() * 20);
+    const createdShip = createShip(ship.type, ship.length);
 
-    if (computer.placeShip(ship, startY, startX, orientation)) {
+    if (
+      computer.gameboard.placeShip(createdShip, startY, startX, orientation)
+    ) {
       placed = true;
+      console.log(
+        `Placed ${ship.type} at ${startY}, ${startX} (${orientation})`
+      );
     }
 
     // if (orientation == "vertical") {
@@ -140,28 +146,44 @@ function placeComputerShip(ship) {
 }
 
 function placeComputerShips() {
-  for (let ship in ships) {
+  ships.forEach((ship) => {
     placeComputerShip(ship);
-  }
+  });
 }
+
 
 async function placePlayerShip(ship) {
   return new Promise((resolve) => {
-    const submitButton = document.querySelector("#submit-ship");
-    submitButton.addEventListener("click", (event) => {
+    // Step 2: Define the event listener function
+    function handleClick(event, ship) {
+      // Step 4: Remove the event listener once the button is clicked
+      submitShipButton.removeEventListener("click", handleClick);
+      // Step 5: Resolve the promise
       event.preventDefault();
-      const row = parseInt(document.querySelector("#row").value) - 1;
-      const col = parseInt(document.querySelector("#col").value) - 1;
-      const orientation =
-        document.querySelector("#orientation").value === "horizontal";
-      if (player.placeShip(ship, row, col, orientation)) {
-        resolve(true);
-      } else {
-        resolve(false);
+      let placed = false;
+      while (!placed) {
+        const row = parseInt(document.querySelector("#row").value) - 1;
+        const col = parseInt(document.querySelector("#col").value) - 1;
+        const orientation =
+          document.querySelector("#orientation").value !== "horizontal";
+        const createdShip = createShip(ship.type, ship.length);
+        console.log(`Placing ${ship.type} at ${row}, ${col} (${orientation})`);
+        if (player.gameboard.placeShip(createdShip, row, col, orientation)) {
+          placed = true;
+        }
       }
-    });
+      resolve(true);
+    }
+
+    // Step 3: Attach the event listener to the button
+    submitShipButton.addEventListener("click", handleClick.bind(null, ship));
   });
 }
+
+// async function placePlayerShip(ship) {
+//   return new Promise((resolve) => {
+//     submitButton.addEventListener("click", placePlayerShipCallback);
+// }
 
 async function placePlayerShips() {
   addShipModal.style.display = "block";
@@ -178,16 +200,9 @@ async function placePlayerShips() {
   //   nextShip();
   // } else {
   //   alert("Invalid placement. Try again.");
-  for (let ship in ships) {
-    let placed = false;
-    while (!placed) {
-      const success = await placePlayerShip(ship);
-      if (success) {
-        placed = true;
-      } else {
-        alert("Invalid placement. Try again.");
-      }
-    }
+  for (let ship of ships) {
+    await placePlayerShip(ship);
+    alert(`${ship.type} placed successfully!`);
   }
   addShipModal.style.display = "none";
 }
@@ -226,6 +241,7 @@ async function getPlayerMove() {
 async function playGame() {
   placeComputerShips();
   await placePlayerShips();
+  alert("All ships placed successfully!");
   renderGameboard(player.gameboard, gameboardDiv1);
   renderGameboard(computer.gameboard, gameboardDiv2);
   game.style.display = "block";
@@ -254,4 +270,4 @@ async function playGame() {
   }
 }
 
-playeGame();
+playGame();
