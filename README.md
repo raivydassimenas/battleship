@@ -5,6 +5,8 @@ This is an implementation of the classical battleship game.
 
 ## Installation and running
 
+You can run the game by opening the GitHub Pages link [here](https://raivydassimenas.github.io/battleship/).
+
 Another way to install and run the Battleship game is by using the Live Server. The prerequisites for this game is Node.js and NPM installations.
 
 - Install VS Code.
