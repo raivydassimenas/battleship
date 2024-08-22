@@ -36,10 +36,6 @@ const renderGameboard = (gameboard, gameboardDiv) => {
     gameboardDiv.appendChild(gameboardDivChild);
 };
 
-// const moveDiv = document.querySelector("#move");
-// moveDiv.textContent =
-//   currPlayer === player1 ? "Player's move" : "Computer's move";
-
 const ships = [
     {type: "carrier", length: 5},
     {type: "battleship", length: 4},
@@ -52,44 +48,6 @@ let currentShipIndex = 0;
 
 shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (Player):`;
 
-// function nextShip() {
-//     currentShipIndex++;
-//     if (currentShipIndex < ships.length) {
-//         shipType.innerText = `Add ${ships[currentShipIndex].type} (${ships[currentShipIndex].length}) ship (Player):`;
-//     } else {
-//         alert("All ships placed successfully!");
-//         // if (currPlayer === player1) {
-//         //   currentShipIndex = 0;
-//         //   currPlayer = player2;
-//         //   shipType.innerText = `Add ${ships[currentShipIndex].type} (${
-//         //     ships[currentShipIndex].length
-//         //   }) ship (${currPlayer === player1 ? "Player" : "Computer"}):`;
-//         // }
-//         // if (currPlayer === player2 && currentShipIndex === ships.length) {
-//     }
-// }
-
-// }
-
-// addShipForm.addEventListener("submit", async (event) => {
-//   event.preventDefault();
-//   await placePlayerShips();
-
-// const startX = parseInt(document.getElementById("col").value) - 1;
-// const startY = parseInt(document.getElementById("row").value) - 1;
-// const orientation =
-//   document.getElementById("orientation").value === "horizontal";
-// const currentShip = ships[currentShipIndex];
-// shipType.innerText = `Add ${currentShip.type} (${currentShip.length}) ship:`;
-
-// const ship = createShip(currentShip.type, currentShip.length);
-// if (currPlayer.gameboard.placeShip(ship, startY, startX, orientation)) {
-//   alert(`${currentShip.type} placed successfully!`);
-//   nextShip();
-// } else {
-//   alert("Invalid placement. Try again.");
-//   }
-// );
 
 function placeComputerShip(ship) {
     let placed = false;
@@ -108,42 +66,6 @@ function placeComputerShip(ship) {
                 `Placed ${ship.type} at ${topRow}, ${topCol} (${orientation})`
             );
         }
-
-        // if (orientation == "vertical") {
-        //   // Vertical
-        //   if (startY + ship.size <= boardSize) {
-        //     let canPlace = true;
-        //     for (let i = 0; i < ship.size; i++) {
-        //       if (computer.gameboard[startY + i][startX] !== 0) {
-        //         canPlace = false;
-        //         break;
-        //       }
-        //     }
-        //     if (canPlace) {
-        //       for (let i = 0; i < ship.size; i++) {
-        //         computerBoard[startY + i][startX] = 1;
-        //       }
-        //       placed = true;
-        //     }
-        //   }
-        // } else {
-        //   // Horizontal
-        //   if (startX + ship.size <= boardSize) {
-        //     let canPlace = true;
-        //     for (let i = 0; i < ship.size; i++) {
-        //       if (computerBoard[startY][startX + i] !== 0) {
-        //         canPlace = false;
-        //         break;
-        //       }
-        //     }
-        //     if (canPlace) {
-        //       for (let i = 0; i < ship.size; i++) {
-        //         computerBoard[startY][startX + i] = 1;
-        //       }
-        //       placed = true;
-        //     }
-        //   }
-        // }
     }
 }
 
@@ -156,55 +78,30 @@ function placeComputerShips() {
 
 async function placePlayerShip(ship) {
     return new Promise((resolve) => {
-        alert(`Placing ${ship.type} (${ship.length})`);
         submitShipButton.onclick = (event) => handleClick(event, ship);
 
-        // Step 2: Define the event listener function
         async function handleClick(event, ship) {
-            // Step 4: Remove the event listener once the button is clicked
-            // submitShipButton.removeEventListener("click", handleClick);
-            // Step 5: Resolve the promise
             event.preventDefault();
             let row = parseInt(document.querySelector("#row").value) - 1;
             let col = parseInt(document.querySelector("#col").value) - 1;
             let orientation =
                 document.querySelector("#orientation").value === "horizontal";
             let createdShip = createShip(ship.type, ship.length);
-                if (!player.gameboard.placeShip(createdShip, row, col, orientation)) {
-                    alert("Invalid placement. Try again.");
-                    submitShipButton.onclick = null;
-                    await placePlayerShip(ship);
-                }
+            if (!player.gameboard.placeShip(createdShip, row, col, orientation)) {
+                alert("Invalid placement. Try again.");
+                submitShipButton.onclick = null;
+                await placePlayerShip(ship);
+            }
 
             submitShipButton.onclick = null;
             resolve(true);
         }
-
-        // Step 3: Attach the event listener to the button
-        // submitShipButton.addEventListener("click", handleClick.bind(null, ship));
     });
 }
 
-// async function placePlayerShip(ship) {
-//   return new Promise((resolve) => {
-//     submitButton.addEventListener("click", placePlayerShipCallback);
-// }
 
 async function placePlayerShips() {
     addShipModal.style.display = "block";
-    // const startX = parseInt(document.getElementById("col").value) - 1;
-    // const startY = parseInt(document.getElementById("row").value) - 1;
-    // const orientation =
-    //   document.getElementById("orientation").value === "horizontal";
-    // const currentShip = ships[currentShipIndex];
-    // shipType.innerText = `Add ${currentShip.type} (${currentShip.length}) ship:`;
-
-    // const ship = createShip(currentShip.type, currentShip.length);
-    // if (player.gameboard.placeShip(ship, startY, startX, orientation)) {
-    //   alert(`${currentShip.type} placed successfully!`);
-    //   nextShip();
-    // } else {
-    //   alert("Invalid placement. Try again.");
     for (let ship of ships) {
         shipType.innerText = `Add ${ship.type} (${ship.length}) ship:`;
         await placePlayerShip(ship);

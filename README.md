@@ -5,7 +5,7 @@ This is an implementation of the classical battleship game.
 
 ## Installation and running
 
-The easiest way to install and run the battleship game is by using the Live Server. The prerequisites for this game is Node.js and NPM installations.
+Another way to install and run the Battleship game is by using the Live Server. The prerequisites for this game is Node.js and NPM installations.
 
 - Install VS Code.
 - Install the Live Server extension.
